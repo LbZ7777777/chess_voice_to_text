@@ -17,6 +17,8 @@ import os
 
 import whisper
 
+import unicodedata
+
 def record_audio(duration, filename = "sound.wav"):
     sample_rate = 44100 #standard value in Hz
 
@@ -68,6 +70,48 @@ def detect_audio():
     else:
         return False
 
+def str_to_move(my_str):
+    my_str = my_str.lower() #convert all letters to lowercase
+    sentence = my_str.split() #separates a string by whitespaces into an array of shorter strings
+
+    #print(sentence)
+    #print(len(sentence))
+
+    move_count = 0 #keeps track of number of detected board positions in the input string
+    move = [] #keeps track of the detected moves
+
+    for word in range(0, len(sentence)): #cycles through the array of strings
+        #print(word)
+        #print(sentence[word])
+        #print(len(sentence[word]))
+
+        for letter in range(1, len(sentence[word])): #cycles through the letters after the first letter of each short string
+            #skip the first letter b/c search algorithm begins by looking for numbers; if the first letter is a number it cannot stand for a move
+
+            type = unicodedata.category(sentence[word][letter]) #finds letter type
+            #print(type)
+
+            if type == "Nd": #if the letter is a number
+                value = int(sentence[word][letter])
+                if (value < 9) and (value > 0):
+                    #print(sentence[word][letter])
+                    #print(unicodedata.category(sentence[word][letter-1]))
+
+                    if unicodedata.category(sentence[word][letter-1]) == "Ll": #if the number is preceeded by a letter
+                        #print(sentence[word][letter-1] + sentence[word][letter])
+
+                        if (sentence[word][letter - 1] >= "a") and (sentence[word][letter - 1] < "i"): #if the letter can be for a move
+                            move.append(sentence[word][letter-1] + sentence[word][letter])
+                            move_count = move_count + 1
+
+                            #print(move_count)
+                            #print(sentence[word][letter-1] + sentence[word][letter])
+
+    if move_count == 2:
+        return move
+    else:
+        return "error, please try again"
+
 '''main program here'''
 
 while True:
@@ -79,7 +123,9 @@ while True:
         transcode_audio()
         output = transcribe_audio()
 
-        print(output)
+        moves = str_to_move(output)
+
+        print(moves)
 
 
 
