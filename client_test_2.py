@@ -17,8 +17,8 @@ except socket.error as err:
 port = 7777 #need to match ports with the server
 
 
-host_ip = "127.0.0.1" #apparently what you use to connect locally
-    #"192.168.0.5" #well . . . I know my IP address
+host_ip = #enter an IP here #apparently what you use to connect locally
+    #"" #well . . . I know my IP address
     #for some url you'd go host_ip = socket.gethostbyname('url here')
     #btw shift + tab does the opposite of a tab
 
