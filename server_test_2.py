@@ -1,4 +1,16 @@
 '''
+WARNING
+You must disable the firewall for the network you are on for clients to access your server.
+
+Most Wifi networks, including your home wifi network, are classified as public networks.
+In Windows Security, under Firewall and Network Protection, click on "Domain network",
+"Private network", and/or "Public network" to see which type of network your current internet
+access falls under.
+
+In my experience, allowing a port through the firewall is insufficient.
+'''
+
+'''
 try without the HisSocket class
 '''
 
@@ -12,7 +24,9 @@ import socket
 
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 port = 7777 #just a random port I make for this
-serversocket.bind(("0.0.0.0", port)) #use "0.0.0.0" to accept any IP address
+serversocket.bind((socket.gethostname(), port))
+#use socket.gethostname() to accept any IP address
+#'' and '0.0.0.0' only work on local networks
 
 #socket.gethostname() returns 'DESKTOP-GO1JE2E' on my device . . .
 my_IP = socket.gethostbyname(socket.gethostname())
